@@ -75,11 +75,11 @@ _join_query() {
   printf "%s\n" "$_joined_query"
 }
 
-# __search()
+# _web_search()
 #
 # Usage:
-#   __search <base url> [<query>]
-__search() {
+#   _web_search <base url> [<query>]
+_web_search() {
   local open_cmd
   local base_url
   local joined_query
@@ -226,7 +226,7 @@ Description:
   Search with Bing.
 EOM
 bing() {
-  __search "$_BING_URL" "$@"
+  _web_search "$_BING_URL" "$@"
 }
 
 # ------------------------------------------------------------------------- ddg
@@ -239,7 +239,7 @@ Description:
   Search with DuckDuckGo.
 EOM
 ddg() {
-  __search "$_DUCKDUCKGO_URL" "$@"
+  _web_search "$_DUCKDUCKGO_URL" "$@"
 }
 
 # ---------------------------------------------------------------------- google
@@ -252,7 +252,7 @@ Description:
   Search with Google.
 EOM
 google() {
-  __search "$_GOOGLE_URL" "$@"
+  _web_search "$_GOOGLE_URL" "$@"
 }
 
 # ----------------------------------------------------------------------- yahoo
@@ -265,7 +265,7 @@ Description:
   Search with Yahoo!
 EOM
 yahoo() {
-  __search "$_YAHOO_URL" "$@"
+  _web_search "$_YAHOO_URL" "$@"
 }
 
 
@@ -279,7 +279,7 @@ Description:
   Search with Yandex.
 EOM
 yandex() {
-  __search "$_YANDEX_URL" "$@"
+  _web_search "$_YANDEX_URL" "$@"
 }
 
 ###############################################################################
@@ -296,7 +296,7 @@ Description:
   I feel ducky.
 EOM
 ducky() {
-  __search "$_DUCKDUCKGO_URL" "\\! ${*}"
+  _web_search "$_DUCKDUCKGO_URL" "\\! ${*}"
 }
 
 # ------------------------------------------------------------------ graphemica
@@ -309,7 +309,7 @@ Description:
   Search Graphemica, for people who ♥ letters, numbers, punctuation, &c.
 EOM
 graphemica() {
-  __search "$_DUCKDUCKGO_URL" "\\!graphemica ${*}"
+  _web_search "$_DUCKDUCKGO_URL" "\\!graphemica ${*}"
 }
 
 # ----------------------------------------------------------------------- image
@@ -322,7 +322,7 @@ Description:
   Search Google Images.
 EOM
 image() {
-  __search "$_DUCKDUCKGO_URL" "\\!i ${*}"
+  _web_search "$_DUCKDUCKGO_URL" "\\!i ${*}"
 }
 
 # ------------------------------------------------------------------------- map
@@ -335,7 +335,7 @@ Description:
   Search Google Maps.
 EOM
 map() {
-  __search "$_DUCKDUCKGO_URL" "\\!m ${*}"
+  _web_search "$_DUCKDUCKGO_URL" "\\!m ${*}"
 }
 
 # ------------------------------------------------------------------------ news
@@ -348,7 +348,7 @@ Description:
   Search Google News.
 EOM
 news() {
-  __search "$_DUCKDUCKGO_URL" "\\!n ${*}"
+  _web_search "$_DUCKDUCKGO_URL" "\\!n ${*}"
 }
 
 # --------------------------------------------------------------------- youtube
@@ -361,7 +361,7 @@ Description:
   Search YouTube.
 EOM
 youtube() {
-  __search "$_DUCKDUCKGO_URL" "\\!yt ${*}"
+  _web_search "$_DUCKDUCKGO_URL" "\\!yt ${*}"
 }
 
 # ------------------------------------------------------------------------ wiki
@@ -374,7 +374,7 @@ Description:
   Search Wikipedia.
 EOM
 wiki() {
-  __search "$_DUCKDUCKGO_URL" "\\!w ${*}"
+  _web_search "$_DUCKDUCKGO_URL" "\\!w ${*}"
 }
 
 _init
