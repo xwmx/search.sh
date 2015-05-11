@@ -109,6 +109,28 @@ _web_search() {
 # Local Search
 ###############################################################################
 
+# ------------------------------------------------------------------------- ack
+
+desc "ack" <<EOM
+Usage:
+  ack <query> [<directory>]
+
+Description:
+  Search file contents using \`ack\`.
+EOM
+_ACK_CMD="$(which ack)"
+ack() {
+  if [[ -z "${1:-}" ]]; then
+    _die printf "Query missing.\n"
+  fi
+  local _directory="."
+  if _present "${2:-}" && [[ -d "$2" ]]; then
+    _directory="$2"
+  fi
+
+  "$_ACK_CMD" "$1" "$_directory"
+}
+
 # ------------------------------------------------------------------------ find
 
 desc "find" <<EOM
