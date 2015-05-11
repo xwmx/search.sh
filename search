@@ -96,7 +96,7 @@ __search() {
   fi
 
   if [[ ! "$open_cmd" == "$_DEFAULT_TERM_BROWSER" ]]; then
-   "$open_cmd" "${search_url}" &>/dev/null
+    "$open_cmd" "${search_url}" &>/dev/null
   else
     "$open_cmd" "${search_url}"
   fi
