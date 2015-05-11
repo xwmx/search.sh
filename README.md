@@ -8,6 +8,8 @@
 
 # search.sh
 
+A command line search multi-tool.
+
 Originally derived from the
 [oh-my-zsh web search
 plugin](http://git.io/oh-my-zsh-web-search-plugin).
