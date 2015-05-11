@@ -4,6 +4,9 @@
 #
 # Add this script and bask to your $PATH. For usage information, run:
 # search help
+#
+# Originally derived from the oh-my-zsh web search plugin:
+# http://git.io/oh-my-zsh-web-search-plugin
 #########################################################################
 
 source "$(which bask)"

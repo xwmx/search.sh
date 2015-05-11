@@ -7,3 +7,7 @@
 ```
 
 # search.sh
+
+Originally derived from the
+[oh-my-zsh web search
+plugin](http://git.io/oh-my-zsh-web-search-plugin).
