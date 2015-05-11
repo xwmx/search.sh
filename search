@@ -131,6 +131,28 @@ ack() {
   "$_ACK_CMD" "$1" "$_directory"
 }
 
+# -------------------------------------------------------------------------- ag
+
+desc "ag" <<EOM
+Usage:
+  ag <query> [<directory>]
+
+Description:
+  Search file contents using The Silver Searcher, aka \`ag\`..
+EOM
+_AG_CMD="$(which ag)"
+ag() {
+  if [[ -z "${1:-}" ]]; then
+    _die printf "Query missing.\n"
+  fi
+  local _directory="."
+  if _present "${2:-}" && [[ -d "$2" ]]; then
+    _directory="$2"
+  fi
+
+  "$_AG_CMD" "$1" "$_directory"
+}
+
 # ------------------------------------------------------------------------ find
 
 desc "find" <<EOM
