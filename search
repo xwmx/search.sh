@@ -162,11 +162,11 @@ Usage:
   find <filename> [<directory>]
 
 Description:
-  Search for a file with a given filename in a directory subtree
-  using the \`find\` utility. By default, this is really just an alias for:
-    \`find . -name <filename>\`
-  When the <directory> argument is provided, find uses that directory as the
-  subtree root.
+  Search for a file with a given filename in a directory subtree using the
+  \`find\` utility. By default, this is scoped to the current directory's
+  subtree, making it the equivalent of \`find . -name <filename>\`. When the
+  <directory> argument is provided, find uses that directory as the subtree
+  root.
 EOM
 _FIND_CMD="$(which find)"
 find() {
