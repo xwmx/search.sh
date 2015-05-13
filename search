@@ -33,10 +33,10 @@ _DEFAULT_TERM_BROWSER="w3m"
 
 # TODO: Baidu HTTPS doesn't appear to work properly in w3m.
 _BAIDU_URL="http://www.baidu.com/s?&wd="
-_GOOGLE_URL="https://www.google.com/search?q="
 _BING_URL="https://www.bing.com/search?q="
-_YAHOO_URL="https://search.yahoo.com/search?p="
 _DUCKDUCKGO_URL="https://www.duckduckgo.com/?q="
+_GOOGLE_URL="https://www.google.com/search?q="
+_YAHOO_URL="https://search.yahoo.com/search?p="
 _YANDEX_URL="https://yandex.ru/yandsearch?text="
 
 ###############################################################################
