@@ -181,6 +181,36 @@ find() {
   "$_FIND_CMD" "$_directory" -name "$1"
 }
 
+# ---------------------------------------------------------------------- locate
+
+desc "locate" <<EOM
+Usage:
+  locate <query> [<directory>]
+
+Description:
+  Search for a file with a given filename using the \`locate\` command. By
+  default the scope of the search is global. When the <directory> argument is
+  provided, \`locate\` uses that directory as the subtree root.
+EOM
+_LOCATE_CMD="$(which locate)"
+locate() {
+  if [[ -z "${1:-}" ]]; then
+    _die printf "Query missing.\n"
+  fi
+  local _directory="."
+  if _present "${2:-}" && [[ -d "$2" ]]; then
+    _directory="$2"
+  fi
+
+  if _present "$_directory"; then
+    # Prefix the pattern with the provided path, and use wildcards to match
+    # matching files at any level in the subtree.
+    "$_LOCATE_CMD" "$_directory/*$1*"
+  else
+    "$_LOCATE_CMD" "$1"
+  fi
+}
+
 # ------------------------------------------------------------------- Spotlight
 
 # Only load this if `mdfind` is present on the system.

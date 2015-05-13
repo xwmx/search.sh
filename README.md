@@ -61,6 +61,18 @@ Description:
   subtree root.
 ```
 
+### locate
+
+```
+Usage:
+  locate <query> [<directory>]
+
+Description:
+  Search for a file with a given filename using the `locate` command. By
+  default the scope of the search is global. When the <directory> argument is
+  provided, `locate` uses that directory as the subtree root.
+```
+
 ### Spotlight
 
 Only available on OS X.
