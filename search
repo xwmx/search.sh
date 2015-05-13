@@ -31,6 +31,8 @@ _DEFAULT_TERM_BROWSER="w3m"
 # Base URLs
 ###############################################################################
 
+# TODO: Baidu HTTPS doesn't appear to work properly in w3m.
+_BAIDU_URL="http://www.baidu.com/s?&wd="
 _GOOGLE_URL="https://www.google.com/search?q="
 _BING_URL="https://www.bing.com/search?q="
 _YAHOO_URL="https://search.yahoo.com/search?p="
@@ -262,6 +264,19 @@ fi
 ###############################################################################
 # Search Engines
 ###############################################################################
+
+# ---------------------------------------------------------------------- baidu
+
+desc "baidu" <<EOM
+Usage:
+  $_ME baidu [<query>]
+
+Description:
+  Search with Baidu.
+EOM
+baidu() {
+  _web_search "$_BAIDU_URL" "$@"
+}
 
 # ------------------------------------------------------------------------ bing
 
