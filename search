@@ -140,7 +140,7 @@ Usage:
   ag <query> [<directory>]
 
 Description:
-  Search file contents using The Silver Searcher, aka \`ag\`..
+  Search file contents using The Silver Searcher, aka \`ag\`.
 EOM
 _AG_CMD="$(which ag)"
 ag() {
