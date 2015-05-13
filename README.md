@@ -19,6 +19,10 @@ line argument structures.
 
 ### ack
 
+> A tool like grep, optimized for programmers.
+
+http://beyondgrep.com/
+
 ```
 Usage:
   ack <query> [<directory>]
@@ -27,7 +31,13 @@ Description:
   Search file contents using `ack`.
 ```
 
-### ag
+### ag / The Silver Searcher
+
+> A code searching tool similar to `ack`, with a focus on speed.
+
+http://betterthanack.com/
+
+https://github.com/ggreer/the_silver_searcher
 
 ```
 Usage:
@@ -50,7 +60,10 @@ Description:
   When the <directory> argument is provided, find uses that directory as the
   subtree root.
 ```
-### spotlight
+
+### Spotlight
+
+Only available on OS X.
 
 ```
 Usage:
@@ -139,7 +152,7 @@ Description:
   Search with Yandex.
 ```
 
-## Site-Specific Search
+## Additional Search Commands
 
 Also included are several commands for performing searches on various
 sites, like YouTube and Wikipedia. Run `search help` to view all of the
