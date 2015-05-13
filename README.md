@@ -108,7 +108,10 @@ page in your terminal browser, if one is installed.
 
 ```
 Usage:
-  $_ME baidu [<query>]
+  $_ME baidu [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Baidu.
@@ -118,7 +121,10 @@ Description:
 
 ```
 Usage:
-  $_ME bing [<query>]
+  $_ME bing bing [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Bing.
@@ -128,7 +134,10 @@ Description:
 
 ```
 Usage:
-  $_ME ddg [<query>]
+  $_ME ddg [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with DuckDuckGo.
@@ -138,7 +147,10 @@ Description:
 
 ```
 Usage:
-  $_ME google [<query>]
+  $_ME google [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Google.
@@ -148,7 +160,10 @@ Description:
 
 ```
 Usage:
-  $_ME yahoo [<query>]
+  $_ME [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Yahoo!
@@ -158,7 +173,10 @@ Description:
 
 ```
 Usage:
-  $_ME yandex [<query>]
+  $_ME yandex [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Yandex.

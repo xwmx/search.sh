@@ -221,7 +221,7 @@ raw_options="$*"
 # In this example, `-x` and `-h` are regular short options, while `o` is
 # assumed to have an argument and will be split if joined with the string,
 # meaning `-oARG` would be split to `-o ARG`.
-optstring=h
+optstring=hg
 
 # Normalize -------------------------------------------------------------------
 
@@ -282,6 +282,7 @@ COMMAND_ARGV=("$0")
 # what the program needs.
 cmd=""
 _USE_DEBUG=0
+_FORCE_GUI=0
 
 while [ $# -gt 0 ]; do
   opt="$1"
@@ -295,6 +296,9 @@ while [ $# -gt 0 ]; do
       ;;
     --debug)
       _USE_DEBUG=1
+      ;;
+    -g|--gui)
+      _FORCE_GUI=1
       ;;
     *)
       # The first non-option argument is assumed to be the command name.
@@ -714,6 +718,7 @@ _YANDEX_URL="https://yandex.ru/yandsearch?text="
 _get_open_cmd() {
   local open_cmd=
   if ( \
+    [[ "$_FORCE_GUI" -eq 0 ]]         && \
     [[ -n "$_DEFAULT_TERM_BROWSER" ]] && \
     _command_exists "$_DEFAULT_TERM_BROWSER"
   ); then
@@ -960,7 +965,10 @@ fi
 
 desc "baidu" <<EOM
 Usage:
-  $_ME baidu [<query>]
+  $_ME baidu [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Baidu.
@@ -973,7 +981,10 @@ baidu() {
 
 desc "bing" <<EOM
 Usage:
-  $_ME bing [<query>]
+  $_ME bing [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Bing.
@@ -986,7 +997,10 @@ bing() {
 
 desc "ddg" <<EOM
 Usage:
-  $_ME ddg [<query>]
+  $_ME ddg [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with DuckDuckGo.
@@ -999,7 +1013,10 @@ ddg() {
 
 desc "google" <<EOM
 Usage:
-  $_ME google [<query>]
+  $_ME google [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Google.
@@ -1012,7 +1029,10 @@ google() {
 
 desc "yahoo" <<EOM
 Usage:
-  $_ME yahoo [<query>]
+  $_ME yahoo [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Yahoo!
@@ -1026,7 +1046,10 @@ yahoo() {
 
 desc "yandex" <<EOM
 Usage:
-  $_ME yandex [<query>]
+  $_ME yandex [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search with Yandex.
@@ -1043,7 +1066,10 @@ yandex() {
 
 desc "ducky" <<EOM
 Usage:
-  $_ME ducky [<query>]
+  $_ME ducky [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   I feel ducky. Go right to the first DuckDuckGo result for this query.
@@ -1056,7 +1082,10 @@ ducky() {
 
 desc "graphemica" <<EOM
 Usage:
-  $_ME graphemica [<query>]
+  $_ME graphemica [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search Graphemica, for people who ♥ letters, numbers, punctuation, &c.
@@ -1071,7 +1100,10 @@ graphemica() {
 
 desc "image" <<EOM
 Usage:
-  $_ME image [<query>]
+  $_ME image [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search Google Images.
@@ -1086,7 +1118,10 @@ image() {
 
 desc "map" <<EOM
 Usage:
-  $_ME map [<query>]
+  $_ME map [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search Google Maps.
@@ -1101,7 +1136,10 @@ map() {
 
 desc "news" <<EOM
 Usage:
-  $_ME news [<query>]
+  $_ME news [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search Google News.
@@ -1116,7 +1154,10 @@ news() {
 
 desc "youtube" <<EOM
 Usage:
-  $_ME youtube [<query>]
+  $_ME youtube [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search YouTube.
@@ -1131,7 +1172,10 @@ youtube() {
 
 desc "wiki" <<EOM
 Usage:
-  $_ME wiki [<query>]
+  $_ME wiki [-g|--gui] [<query>]
+
+Options:
+  -g --gui  Open in the default GUI browser rather than the terminal.
 
 Description:
   Search Wikipedia.
