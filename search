@@ -355,7 +355,7 @@ Usage:
   $_ME ducky [<query>]
 
 Description:
-  I feel ducky.
+  I feel ducky. Go right to the first DuckDuckGo result for this query.
 EOM
 ducky() {
   _web_search "$_DUCKDUCKGO_URL" "\\! ${*}"
@@ -369,6 +369,8 @@ Usage:
 
 Description:
   Search Graphemica, for people who ♥ letters, numbers, punctuation, &c.
+
+  http://graphemica.com/
 EOM
 graphemica() {
   _web_search "$_DUCKDUCKGO_URL" "\\!graphemica ${*}"
@@ -382,6 +384,8 @@ Usage:
 
 Description:
   Search Google Images.
+
+  https://images.google.com/
 EOM
 image() {
   _web_search "$_DUCKDUCKGO_URL" "\\!i ${*}"
@@ -395,6 +399,8 @@ Usage:
 
 Description:
   Search Google Maps.
+
+  https://maps.google.com/
 EOM
 map() {
   _web_search "$_DUCKDUCKGO_URL" "\\!m ${*}"
@@ -408,6 +414,8 @@ Usage:
 
 Description:
   Search Google News.
+
+  https://news.google.com/
 EOM
 news() {
   _web_search "$_DUCKDUCKGO_URL" "\\!n ${*}"
@@ -421,6 +429,8 @@ Usage:
 
 Description:
   Search YouTube.
+
+  https://www.youtube.com/
 EOM
 youtube() {
   _web_search "$_DUCKDUCKGO_URL" "\\!yt ${*}"
@@ -434,6 +444,8 @@ Usage:
 
 Description:
   Search Wikipedia.
+
+  https://en.wikipedia.org/wiki/Main_Page
 EOM
 wiki() {
   _web_search "$_DUCKDUCKGO_URL" "\\!w ${*}"
