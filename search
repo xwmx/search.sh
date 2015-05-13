@@ -162,7 +162,7 @@ Usage:
   find <filename> [<directory>]
 
 Description:
-  Search for a file with a given filename in the a directory subtree
+  Search for a file with a given filename in a directory subtree
   using the \`find\` utility. By default, this is really just an alias for:
     \`find . -name <filename>\`
   When the <directory> argument is provided, find uses that directory as the
