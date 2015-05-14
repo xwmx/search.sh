@@ -940,7 +940,7 @@ grep() {
   fi
 
   "$_GREP_CMD" \
-    -recursive \
+    --recursive \
     --color=auto \
     --line-number \
     --exclude-dir={.bzr,.cvs,.git,.hg,.svn} \
