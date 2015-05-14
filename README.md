@@ -61,6 +61,20 @@ Description:
   root.
 ```
 
+### grep
+
+```
+Usage:
+  grep <pattern> [<directory>]
+
+Description:
+  Search file conents in a directory subtree for a given pattern using the
+  `grep` utility. By default, this is scoped to the current directory's
+  subtree, making it the equivalent of `grep -r <pattern> .`. When the
+  <directory> argument is provided, find uses that directory as the subtree
+  root.
+```
+
 ### locate
 
 ```
