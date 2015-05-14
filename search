@@ -132,7 +132,7 @@ DEFAULT_COMMAND="${DEFAULT_COMMAND:-help}"
 
 # _debug()
 #
-# A simple function for executing a specified command if the `_USE_DEBUG`
+# A simple function for executing a specified command if the `$_USE_DEBUG`
 # variable has been set. The command is expected to print a message and
 # should typically be either `echo`, `printf`, or `cat`.
 #
