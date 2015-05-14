@@ -70,9 +70,15 @@ Usage:
 Description:
   Search file conents in a directory subtree for a given pattern using the
   `grep` utility. By default, this is scoped to the current directory's
-  subtree, making it the equivalent of `grep -r <pattern> .`. When the
-  <directory> argument is provided, find uses that directory as the subtree
-  root.
+  subtree. When the <directory> argument is provided, find uses that directory
+  as the subtree root.
+
+  This command calls `grep` with the following options:
+    -recursive
+    --color=auto
+    --line-number
+    --exclude-dir={.bzr,.cvs,.git,.hg,.svn}
+    -e "$pattern"
 ```
 
 ### locate

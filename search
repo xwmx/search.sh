@@ -913,9 +913,15 @@ Usage:
 Description:
   Search file conents in a directory subtree for a given pattern using the
   \`grep\` utility. By default, this is scoped to the current directory's
-  subtree, making it the equivalent of \`grep -r <pattern> .\`. When the
-  <directory> argument is provided, find uses that directory as the subtree
-  root.
+  subtree. When the <directory> argument is provided, find uses that directory
+  as the subtree root.
+
+  This command calls \`grep\` with the following options:
+    -recursive
+    --color=auto
+    --line-number
+    --exclude-dir={.bzr,.cvs,.git,.hg,.svn}
+    --re
 EOM
 _GREP_CMD="$(which grep)"
 grep() {
@@ -928,7 +934,13 @@ grep() {
     _validate_existence_of_path "$2"
   fi
 
-  "$_GREP_CMD" -r "$1" "$_directory"
+  "$_GREP_CMD" \
+    -recursive \
+    --color=auto \
+    --line-number \
+    --exclude-dir={.bzr,.cvs,.git,.hg,.svn} \
+    -e "$1" \
+    "$_directory"
 }
 
 # ---------------------------------------------------------------------- locate
