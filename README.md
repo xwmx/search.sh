@@ -35,9 +35,9 @@ Description:
 
 > A code searching tool similar to `ack`, with a focus on speed.
 
-http://betterthanack.com/
-
 https://github.com/ggreer/the_silver_searcher
+
+http://geoff.greer.fm/ag/
 
 ```
 Usage:
