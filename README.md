@@ -74,7 +74,7 @@ Description:
   as the subtree root.
 
   This command calls `grep` with the following options:
-    -recursive
+    --recursive
     --color=auto
     --line-number
     --exclude-dir={.bzr,.cvs,.git,.hg,.svn}
