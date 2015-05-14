@@ -6,8 +6,14 @@
 #  (__  )  __/ /_/ / /  / /__/ / / /
 # /____/\___/\__,_/_/   \___/_/ /_/
 #
+# A command line search multi-tool. search.sh provides a common interface
+# for both local file and full text searches, as well as web searches.
+#
 # Originally derived from the oh-my-zsh web search plugin:
 # http://git.io/oh-my-zsh-web-search-plugin
+#
+# Built with bash-boilerplate:
+# https://github.com/alphabetum/bash-boilerplate
 #
 # Copyright (c) 2015 William Melody • hi@williammelody.com
 #########################################################################
@@ -614,6 +620,9 @@ help() {
   / ___/ _ \\/ __ \`/ ___/ ___/ __ \\
  (__  )  __/ /_/ / /  / /__/ / / /
 /____/\\___/\\__,_/_/   \\___/_/ /_/
+
+A command line search multi-tool. \`$_ME\` provides a common interface
+for both local file and full text searches, as well as web searches.
 
 Version: $_VERSION
 
