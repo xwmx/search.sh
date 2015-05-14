@@ -25,10 +25,12 @@ http://beyondgrep.com/
 
 ```
 Usage:
-  ack <query> [<directory>]
+  ack <query> [<path>]
 
 Description:
-  Search file contents using `ack`.
+  Search file contents using `ack`. By default, the search is scoped to the
+  current directory's subtree. When a path is passed as the second argument,
+  the search is scoped to the given directory's subtree or the given file.
 ```
 
 ### ag / The Silver Searcher
@@ -41,23 +43,26 @@ http://geoff.greer.fm/ag/
 
 ```
 Usage:
-  ag <query> [<directory>]
+  ag <query> [<path>]
 
 Description:
-  Search file contents using The Silver Searcher, aka `ag`.
+  Search file contents using The Silver Searcher, aka `ag`. By default, the
+  search is scoped to the current directory's subtree. When a path is passed
+  as the second argument, the search is scoped to the given directory's
+  subtree or the given file.
 ```
 
 ### find
 
 ```
 Usage:
-  find <filename> [<directory>]
+  find <filename> [<path>]
 
 Description:
   Search for a file with a given filename in a directory subtree using the
-  `find` utility. By default, this is scoped to the current directory's
+  \`find\` utility. By default, this is scoped to the current directory's
   subtree, making it the equivalent of `find . -name <filename>`. When the
-  <directory> argument is provided, find uses that directory as the subtree
+  <path> argument is provided, find uses that directory as the subtree
   root.
 ```
 
@@ -65,13 +70,13 @@ Description:
 
 ```
 Usage:
-  grep <pattern> [<directory>]
+  grep <pattern> [<path>]
 
 Description:
   Search file conents in a directory subtree for a given pattern using the
   `grep` utility. By default, this is scoped to the current directory's
-  subtree. When the <directory> argument is provided, find uses that directory
-  as the subtree root.
+  subtree. When the <path> argument is provided, the search is scoped to the
+  given directory's subtree or the given file.
 
   This command calls `grep` with the following options:
     --recursive
@@ -85,11 +90,11 @@ Description:
 
 ```
 Usage:
-  locate <query> [<directory>]
+  locate <query> [<path>]
 
 Description:
   Search for a file with a given filename using the `locate` command. By
-  default the scope of the search is global. When the <directory> argument is
+  default the scope of the search is global. When the <path> argument is
   provided, `locate` uses that directory as the subtree root.
 ```
 
@@ -99,9 +104,9 @@ Only available on OS X.
 
 ```
 Usage:
-  spotlight <full text query | filename> [<directory>]
-  spotlight ( -f | --filename ) <filename> [<directory>]
-  spotlight ( --fulltext | -c | --content ) <query> [<directory>]
+  spotlight <full text query | filename> [<path>]
+  spotlight ( -f | --filename ) <filename> [<path>]
+  spotlight ( --fulltext | -c | --content ) <query> [<path>]
 
 Options:
   -f --filename             A filename to search for.
@@ -112,7 +117,7 @@ Description:
 
   When no options are used, this behaves as if the query was typed into the
   Spotlight menu and will return hits for both the filename and content. When
-  a <directory> argument is provided, the search will be scoped to that
+  a <path> argument is provided, the search will be scoped to that
   directory and its subtree.
 
   This command wraps `mdfind` and only works on OS X.
