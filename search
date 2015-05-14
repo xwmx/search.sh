@@ -782,6 +782,16 @@ _web_search() {
   fi
 }
 
+# _validate_existence_of_path()
+#
+# Usage:
+#   _validate_existence_of_path "some/path"
+_validate_existence_of_path() {
+  if _blank "${1:-}" || [[ ! -e "${1:-}" ]]; then
+    _die printf "The path \`%s\` is not found.\n" "${1:-}"
+  fi
+}
+
 ###############################################################################
 # Local Search
 ###############################################################################
@@ -819,8 +829,9 @@ http://beyondgrep.com/
     _die printf "Query missing.\n"
   fi
   local _directory="."
-  if _present "${2:-}" && [[ -d "$2" ]]; then
+  if _present "${2:-}"; then
     _directory="$2"
+    _validate_existence_of_path "$2"
   fi
 
   "$_ACK_CMD" "$1" "$_directory"
@@ -858,8 +869,9 @@ http://geoff.greer.fm/ag/
     _die printf "Query missing.\n"
   fi
   local _directory="."
-  if _present "${2:-}" && [[ -d "$2" ]]; then
+  if _present "${2:-}"; then
     _directory="$2"
+    _validate_existence_of_path "$2"
   fi
 
   "$_AG_CMD" "$1" "$_directory"
@@ -884,8 +896,9 @@ find() {
     _die printf "Query missing.\n"
   fi
   local _directory="."
-  if _present "${2:-}" && [[ -d "$2" ]]; then
+  if _present "${2:-}"; then
     _directory="$2"
+    _validate_existence_of_path "$2"
   fi
 
   "$_FIND_CMD" "$_directory" -name "$1"
@@ -908,8 +921,9 @@ locate() {
     _die printf "Query missing.\n"
   fi
   local _directory="."
-  if _present "${2:-}" && [[ -d "$2" ]]; then
+  if _present "${2:-}"; then
     _directory="$2"
+    _validate_existence_of_path "$2"
   fi
 
   if _present "$_directory"; then
@@ -973,6 +987,9 @@ spotlight() {
 
   if [[ -z "${_query:-}" ]]; then
     _die printf "Query missing.\n"
+  fi
+  if _present "$_directory"; then
+    _validate_existence_of_path "$_directory"
   fi
 
   case "$_search_type" in
