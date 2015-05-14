@@ -795,8 +795,26 @@ Usage:
 Description:
   Search file contents using \`ack\`.
 EOM
-_ACK_CMD="$(which ack)"
+_get_ack_cmd() {
+  local _ack_cmd=
+  if _command_exists "ack"; then
+    _ack_cmd="$(which ack)"
+  elif _command_exists "ack-grep"; then
+    _ack_cmd="ack-grep"
+  fi
+  printf "%s\n" "$_ack_cmd"
+}
+_ACK_CMD="$(_get_ack_cmd)"
 ack() {
+  if _blank "$_ACK_CMD"; then
+    printf "\
+\`ack\` is not installed.
+
+For information and installation instructions, visit:
+http://beyondgrep.com/
+"
+    exit 1
+  fi
   if [[ -z "${1:-}" ]]; then
     _die printf "Query missing.\n"
   fi
@@ -817,8 +835,25 @@ Usage:
 Description:
   Search file contents using The Silver Searcher, aka \`ag\`.
 EOM
+_get_ag_cmd() {
+  local _ag_cmd=
+  if _command_exists "ag"; then
+    _ag_cmd="$(which ag)"
+  fi
+  printf "%s\n" "$_ag_cmd"
+}
 _AG_CMD="$(which ag)"
 ag() {
+  if _blank "$_AG_CMD"; then
+    printf "\
+\`ag\` (The Silver Searcher) is not installed.
+
+For information and installation instructions, visit:
+https://github.com/ggreer/the_silver_searcher
+http://geoff.greer.fm/ag/
+"
+    exit 1
+  fi
   if [[ -z "${1:-}" ]]; then
     _die printf "Query missing.\n"
   fi
