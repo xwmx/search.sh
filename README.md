@@ -121,7 +121,7 @@ Description:
 
 ```
 Usage:
-  $_ME bing bing [-g|--gui] [<query>]
+  $_ME bing [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -160,7 +160,7 @@ Description:
 
 ```
 Usage:
-  $_ME [-g|--gui] [<query>]
+  $_ME yahoo [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
