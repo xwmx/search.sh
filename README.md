@@ -8,8 +8,8 @@
 
 # search.sh
 
-A command line search multi-tool. search.sh provides a common interface
-for both local file and full text searches, as well as web searches.
+A command line search multi-tool written in Bash. search.sh provides a common
+interface for both local file and full text searches, as well as web searches.
 
 ## Local Search
 
