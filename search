@@ -590,7 +590,7 @@ _print_desc() {
 
 # Version #####################################################################
 
-desc version <<EOM
+desc "version" <<EOM
 Usage:
   $_ME ( version | --version )
 
@@ -605,7 +605,7 @@ version() {
 
 # Help ########################################################################
 
-desc help <<EOM
+desc "help" <<EOM
 Usage:
   $_ME help [<command>]
 
@@ -647,7 +647,7 @@ EOM
 
 # Command List ################################################################
 
-desc commands <<EOM
+desc "commands" <<EOM
 Usage:
   $_ME commands [--raw]
 
@@ -939,7 +939,7 @@ locate() {
 
 # Only load this if `mdfind` is present on the system.
 if _command_exists "mdfind"; then
-desc spotlight <<EOM
+desc "spotlight" <<EOM
 Usage:
   spotlight <full text query | filename> [<directory>]
   spotlight ( -f | --filename ) <filename> [<directory>]
