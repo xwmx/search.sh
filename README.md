@@ -35,6 +35,18 @@ you already have a `~/bin` directory, you can use the following command:
 
 ## Usage
 
+Program usage info:
+
+    search help
+
+Available commands:
+
+    search commands
+
+Command usage information:
+
+    search help <command-name>
+
 ### Local Search
 
 The local search commands are a set of commands that wrap common
@@ -49,7 +61,7 @@ http://beyondgrep.com/
 
 ```
 Usage:
-  ack <query> [<path>]
+  search ack <query> [<path>]
 
 Description:
   Search file contents using `ack`. By default, the search is scoped to the
@@ -67,7 +79,7 @@ http://geoff.greer.fm/ag/
 
 ```
 Usage:
-  ag <query> [<path>]
+  search ag <query> [<path>]
 
 Description:
   Search file contents using The Silver Searcher, aka `ag`. By default, the
@@ -80,7 +92,7 @@ Description:
 
 ```
 Usage:
-  find <filename> [<path>]
+  search find <filename> [<path>]
 
 Description:
   Search for a file with a given filename in a directory subtree using the
@@ -94,7 +106,7 @@ Description:
 
 ```
 Usage:
-  grep <pattern> [<path>]
+  search grep <pattern> [<path>]
 
 Description:
   Search file conents in a directory subtree for a given pattern using the
@@ -114,7 +126,7 @@ Description:
 
 ```
 Usage:
-  locate <query> [<path>]
+  search locate <query> [<path>]
 
 Description:
   Search for a file with a given filename using the `locate` command. By
@@ -128,9 +140,9 @@ Only available on OS X.
 
 ```
 Usage:
-  spotlight <full text query | filename> [<path>]
-  spotlight ( -f | --filename ) <filename> [<path>]
-  spotlight ( --fulltext | -c | --content ) <query> [<path>]
+  search spotlight <full text query | filename> [<path>]
+  search spotlight ( -f | --filename ) <filename> [<path>]
+  search spotlight ( --fulltext | -c | --content ) <query> [<path>]
 
 Options:
   -f --filename             A filename to search for.
@@ -157,7 +169,7 @@ page in your terminal browser, if one is installed.
 
 ```
 Usage:
-  $_ME baidu [-g|--gui] [<query>]
+  search baidu [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -170,7 +182,7 @@ Description:
 
 ```
 Usage:
-  $_ME bing [-g|--gui] [<query>]
+  search bing [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -183,7 +195,7 @@ Description:
 
 ```
 Usage:
-  $_ME ddg [-g|--gui] [<query>]
+  search ddg [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -196,7 +208,7 @@ Description:
 
 ```
 Usage:
-  $_ME google [-g|--gui] [<query>]
+  search google [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -209,7 +221,7 @@ Description:
 
 ```
 Usage:
-  $_ME yahoo [-g|--gui] [<query>]
+  search yahoo [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -222,7 +234,7 @@ Description:
 
 ```
 Usage:
-  $_ME yandex [-g|--gui] [<query>]
+  search yandex [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
