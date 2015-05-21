@@ -11,13 +11,37 @@
 A command line search multi-tool written in Bash. search.sh provides a common
 interface for both local file and full text searches, as well as web searches.
 
-## Local Search
+## Installation
+
+### Homebrew
+
+To install with [Homebrew](http://brew.sh/):
+
+    brew install alphabetum/taps/search-sh
+
+### bpkg
+
+To install with [bpkg](http://www.bpkg.io/):
+
+    bpkg install alphabetum/search.sh
+
+### Manual
+
+To install manually, simply add the `hosts` script to your `$PATH`. If
+you already have a `~/bin` directory, you can use the following command:
+
+    curl -L https://raw.github.com/alphabetum/search.sh/master/search.sh \
+      -o ~/bin/search && chmod +x ~/bin/search
+
+## Usage
+
+### Local Search
 
 The local search commands are a set of commands that wrap common
 operations of locally-installed search utilities with uniform command
 line argument structures.
 
-### ack
+#### ack
 
 > A tool like grep, optimized for programmers.
 
@@ -33,7 +57,7 @@ Description:
   the search is scoped to the given directory's subtree or the given file.
 ```
 
-### ag / The Silver Searcher
+#### ag / The Silver Searcher
 
 > A code searching tool similar to `ack`, with a focus on speed.
 
@@ -52,7 +76,7 @@ Description:
   subtree or the given file.
 ```
 
-### find
+#### find
 
 ```
 Usage:
@@ -66,7 +90,7 @@ Description:
   root.
 ```
 
-### grep
+#### grep
 
 ```
 Usage:
@@ -86,7 +110,7 @@ Description:
     -e "$pattern"
 ```
 
-### locate
+#### locate
 
 ```
 Usage:
@@ -98,7 +122,7 @@ Description:
   provided, `locate` uses that directory as the subtree root.
 ```
 
-### Spotlight
+#### Spotlight
 
 Only available on OS X.
 
@@ -123,13 +147,13 @@ Description:
   This command wraps `mdfind` and only works on OS X.
 ```
 
-## Internet Search
+### Internet Search
 
 search.sh includes commands for searching each of the major internet
 search engines and will default to opening the resulting search results
 page in your terminal browser, if one is installed.
 
-### baidu
+#### baidu
 
 ```
 Usage:
@@ -142,7 +166,7 @@ Description:
   Search with Baidu.
 ```
 
-### bing
+#### bing
 
 ```
 Usage:
@@ -155,7 +179,7 @@ Description:
   Search with Bing.
 ```
 
-### ddg
+#### ddg
 
 ```
 Usage:
@@ -168,7 +192,7 @@ Description:
   Search with DuckDuckGo.
 ```
 
-### google
+#### google
 
 ```
 Usage:
@@ -181,7 +205,7 @@ Description:
   Search with Google.
 ```
 
-### yahoo
+#### yahoo
 
 ```
 Usage:
@@ -194,7 +218,7 @@ Description:
   Search with Yahoo!
 ```
 
-### yandex
+#### yandex
 
 ```
 Usage:
@@ -207,7 +231,7 @@ Description:
   Search with Yandex.
 ```
 
-## Additional Search Commands
+### Additional Search Commands
 
 Also included are several commands for performing searches on various
 sites, like YouTube and Wikipedia. Run `search help` to view all of the
