@@ -1,6 +1,6 @@
 {
   "name": "search.sh",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A command line search multi-tool.",
   "global": true,
   "install": "make install"
