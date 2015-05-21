@@ -800,7 +800,7 @@ _validate_existence_of_path() {
 
 desc "ack" <<EOM
 Usage:
-  ack <query> [<path>]
+  $_ME ack <query> [<path>]
 
 Description:
   Search file contents using \`ack\`. By default, the search is scoped to the
@@ -843,7 +843,7 @@ http://beyondgrep.com/
 
 desc "ag" <<EOM
 Usage:
-  ag <query> [<path>]
+  $_ME ag <query> [<path>]
 
 Description:
   Search file contents using The Silver Searcher, aka \`ag\`. By default, the
@@ -886,7 +886,7 @@ http://geoff.greer.fm/ag/
 
 desc "find" <<EOM
 Usage:
-  find <filename> [<path>]
+  $_ME find <filename> [<path>]
 
 Description:
   Search for a file with a given filename in a directory subtree using the
@@ -913,7 +913,7 @@ find() {
 
 desc "grep" <<EOM
 Usage:
-  grep <pattern> [<path>]
+  $_ME grep <pattern> [<path>]
 
 Description:
   Search file conents in a directory subtree for a given pattern using the
@@ -952,7 +952,7 @@ grep() {
 
 desc "locate" <<EOM
 Usage:
-  locate <query> [<path>]
+  $_ME locate <query> [<path>]
 
 Description:
   Search for a file with a given filename using the \`locate\` command. By
@@ -985,9 +985,9 @@ locate() {
 if _command_exists "mdfind"; then
 desc "spotlight" <<EOM
 Usage:
-  spotlight <full text query | filename> [<path>]
-  spotlight ( -f | --filename ) <filename> [<path>]
-  spotlight ( --fulltext | -c | --content ) <query> [<path>]
+  $_ME spotlight <full text query | filename> [<path>]
+  $_ME spotlight ( -f | --filename ) <filename> [<path>]
+  $_ME spotlight ( --fulltext | -c | --content ) <query> [<path>]
 
 Options:
   -f --filename             A filename to search for.
