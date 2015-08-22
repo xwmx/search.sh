@@ -237,12 +237,14 @@ optstring=hg
 # argument to the option, such as wget -qO-)
 unset options
 # while the number of arguments is greater than 0
-while (($#)); do
+while (($#))
+do
   case $1 in
     # if option is of type -ab
     -[!-]?*)
       # loop over each character starting with the second
-      for ((i=1; i<${#1}; i++)); do
+      for ((i=1; i<${#1}; i++))
+      do
         # extract 1 character from position 'i'
         c=${1:i:1}
         # add current char to options
@@ -250,14 +252,17 @@ while (($#)); do
 
         # if option takes a required argument, and it's not the last char
         # make the rest of the string its argument
-        if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
+        if [[ $optstring = *"$c:"* && ${1:i+1} ]]
+        then
           options+=("${1:i+1}")
           break
         fi
       done
       ;;
     # if option is of type --foo=bar, split on first '='
-    --?*=*) options+=("${1%%=*}" "${1#*=}");;
+    --?*=*)
+      options+=("${1%%=*}" "${1#*=}")
+      ;;
     # end of options, stop breaking them up
     --)
       options+=(--endopts)
@@ -266,7 +271,9 @@ while (($#)); do
       break
       ;;
     # otherwise, nothing special
-    *) options+=("$1");;
+    *)
+      options+=("$1")
+      ;;
   esac
 
   shift
@@ -290,7 +297,8 @@ _CMD=""
 _USE_DEBUG=0
 _FORCE_GUI=0
 
-while [ $# -gt 0 ]; do
+while [ $# -gt 0 ]
+do
   opt="$1"
   shift
   case "$opt" in
@@ -309,7 +317,8 @@ while [ $# -gt 0 ]; do
     *)
       # The first non-option argument is assumed to be the command name.
       # All subsequent arguments are added to $command_arguments.
-      if [[ -n $_CMD ]]; then
+      if [[ -n $_CMD ]]
+      then
         _COMMAND_ARGV+=("$opt")
       else
         _CMD="$opt"
@@ -379,7 +388,8 @@ _load_commands() {
            [[ "$function_name" == "desc"  ]] || \
            [[ "$function_name" == "debug" ]] || \
            [[ "$function_name" == "die"   ]]
-    ); then
+    )
+    then
       _DEFINED_COMMANDS+=("$function_name")
     fi
   done
@@ -406,7 +416,8 @@ _main() {
   _debug printf "main() \$_CMD (upon entering): %s\n" "$_CMD"
 
   # If $_CMD is blank, then set to help
-  if [[ -z $_CMD ]]; then
+  if [[ -z $_CMD ]]
+  then
     _CMD="$DEFAULT_COMMAND"
   fi
 
@@ -414,7 +425,8 @@ _main() {
   _load_commands
 
   # If the command is defined, run it, otherwise return an error.
-  if _contains "$_CMD" "${_DEFINED_COMMANDS[*]:-}"; then
+  if _contains "$_CMD" "${_DEFINED_COMMANDS[*]:-}"
+  then
     # Pass all comment arguments to the program except for the first ($0).
     $_CMD "${_COMMAND_PARAMETERS[@]:-}"
   else
@@ -462,7 +474,8 @@ _contains() {
   for _test_element in "${test_list[@]:-}"
   do
     _debug printf "_contains() \$_test_element: %s\n" "$_test_element"
-    if [[ "$_test_element" == "$1" ]]; then
+    if [[ "$_test_element" == "$1" ]]
+    then
       _debug printf "_contains() match: %s\n" "$1"
       return 0
     fi
@@ -556,7 +569,8 @@ _present() {
 desc() {
   set +e
   [[ -z $1 ]] && _die printf "desc: No command name specified.\n"
-  if [[ -n ${2:-} ]]; then
+  if [[ -n ${2:-} ]]
+  then
     read -d '' "_desc_$1" <<EOM
 $2
 EOM
@@ -577,7 +591,8 @@ EOM
 # set using the desc() function.
 _print_desc() {
   local var="_desc_$1"
-  if [[ -n ${!var:-} ]]; then
+  if [[ -n ${!var:-} ]]
+  then
     printf "%s\n" "${!var}"
   else
     printf "No additional information for \`%s\`\n" "$1"
@@ -613,7 +628,8 @@ Description:
   Display help information for $_ME or a specified command.
 EOM
 help() {
-  if [[ ${#_COMMAND_ARGV[@]} = 1 ]]; then
+  if [[ ${#_COMMAND_ARGV[@]} = 1 ]]
+  then
     cat <<EOM
                               __           __
    ________  ____ ___________/ /_    _____/ /_
@@ -658,7 +674,8 @@ Description:
   Display the list of available commands.
 EOM
 commands() {
-  if _command_argv_includes "--raw"; then
+  if _command_argv_includes "--raw"
+  then
     printf "%s\n" "${_DEFINED_COMMANDS[@]}"
   else
     printf "Available commands:\n"
@@ -730,7 +747,8 @@ _get_open_cmd() {
     [[ "$_FORCE_GUI" -eq 0 ]]         && \
     [[ -n "$_DEFAULT_TERM_BROWSER" ]] && \
     _command_exists "$_DEFAULT_TERM_BROWSER"
-  ); then
+  )
+  then
     open_cmd="$_DEFAULT_TERM_BROWSER"
   else
     case "$OSTYPE" in
@@ -768,14 +786,16 @@ _web_search() {
   open_cmd="$(_get_open_cmd)"
   base_url="$1"
 
-  if [[ -z "${2:-}" ]]; then
+  if [[ -z "${2:-}" ]]
+  then
     search_url="$(printf "%s\n" "$base_url" | sed "s_[^/]*\$__" )"
   else
     joined_query="$(_join_query "${@:2}")"
     search_url="${base_url}${joined_query}"
   fi
 
-  if [[ ! "$open_cmd" == "$_DEFAULT_TERM_BROWSER" ]]; then
+  if [[ ! "$open_cmd" == "$_DEFAULT_TERM_BROWSER" ]];
+  then
     "$open_cmd" "${search_url}" &>/dev/null
   else
     "$open_cmd" "${search_url}"
@@ -787,7 +807,8 @@ _web_search() {
 # Usage:
 #   _validate_existence_of_path "some/path"
 _validate_existence_of_path() {
-  if _blank "${1:-}" || [[ ! -e "${1:-}" ]]; then
+  if _blank "${1:-}" || [[ ! -e "${1:-}" ]]
+  then
     _die printf "The path \`%s\` is not found.\n" "${1:-}"
   fi
 }
@@ -809,16 +830,19 @@ Description:
 EOM
 _get_ack_cmd() {
   local _ack_cmd=
-  if _command_exists "ack"; then
+  if _command_exists "ack"
+  then
     _ack_cmd="$(which ack)"
-  elif _command_exists "ack-grep"; then
+  elif _command_exists "ack-grep"
+  then
     _ack_cmd="ack-grep"
   fi
   printf "%s\n" "$_ack_cmd"
 }
 _ACK_CMD="$(_get_ack_cmd)"
 ack() {
-  if _blank "$_ACK_CMD"; then
+  if _blank "$_ACK_CMD"
+  then
     printf "\
 \`ack\` is not installed.
 
@@ -827,11 +851,13 @@ http://beyondgrep.com/
 "
     exit 1
   fi
-  if [[ -z "${1:-}" ]]; then
+  if [[ -z "${1:-}" ]]
+  then
     _die printf "Query missing.\n"
   fi
   local _path="."
-  if _present "${2:-}"; then
+  if _present "${2:-}"
+  then
     _path="$2"
     _validate_existence_of_path "$_path"
   fi
@@ -853,14 +879,16 @@ Description:
 EOM
 _get_ag_cmd() {
   local _ag_cmd=
-  if _command_exists "ag"; then
+  if _command_exists "ag"
+  then
     _ag_cmd="$(which ag)"
   fi
   printf "%s\n" "$_ag_cmd"
 }
 _AG_CMD="$(which ag)"
 ag() {
-  if _blank "$_AG_CMD"; then
+  if _blank "$_AG_CMD"
+  then
     printf "\
 \`ag\` (The Silver Searcher) is not installed.
 
@@ -870,11 +898,13 @@ http://geoff.greer.fm/ag/
 "
     exit 1
   fi
-  if [[ -z "${1:-}" ]]; then
+  if [[ -z "${1:-}" ]]
+  then
     _die printf "Query missing.\n"
   fi
   local _path="."
-  if _present "${2:-}"; then
+  if _present "${2:-}"
+  then
     _path="$2"
     _validate_existence_of_path "$_path"
   fi
@@ -897,11 +927,13 @@ Description:
 EOM
 _FIND_CMD="$(which find)"
 find() {
-  if [[ -z "${1:-}" ]]; then
+  if [[ -z "${1:-}" ]]
+  then
     _die printf "Query missing.\n"
   fi
   local _path="."
-  if _present "${2:-}"; then
+  if _present "${2:-}"
+  then
     _path="$2"
     _validate_existence_of_path "$_path"
   fi
@@ -930,11 +962,13 @@ Description:
 EOM
 _GREP_CMD="$(which grep)"
 grep() {
-  if [[ -z "${1:-}" ]]; then
+  if [[ -z "${1:-}" ]]
+  then
     _die printf "Query missing.\n"
   fi
   local _path="."
-  if _present "${2:-}"; then
+  if _present "${2:-}"
+  then
     _path="$2"
     _validate_existence_of_path "$_path"
   fi
@@ -961,16 +995,19 @@ Description:
 EOM
 _LOCATE_CMD="$(which locate)"
 locate() {
-  if [[ -z "${1:-}" ]]; then
+  if [[ -z "${1:-}" ]]
+  then
     _die printf "Query missing.\n"
   fi
   local _path="."
-  if _present "${2:-}"; then
+  if _present "${2:-}"
+  then
     _path="$2"
     _validate_existence_of_path "$_path"
   fi
 
-  if _present "$_path"; then
+  if _present "$_path"
+  then
     # Prefix the pattern with the provided path, and use wildcards to match
     # matching files at any level in the subtree.
     "$_LOCATE_CMD" "$_path/*$1*"
@@ -982,7 +1019,8 @@ locate() {
 # ------------------------------------------------------------------- Spotlight
 
 # Only load this if `mdfind` is present on the system.
-if _command_exists "mdfind"; then
+if _command_exists "mdfind"
+then
 desc "spotlight" <<EOM
 Usage:
   $_ME spotlight <full text query | filename> [<path>]
@@ -1008,7 +1046,8 @@ spotlight() {
   local _query=
   local _path=
 
-  for arg in "${_COMMAND_ARGV[@]:1}"; do
+  for arg in "${_COMMAND_ARGV[@]:1}"
+  do
     case $arg in
       -f|--filename)
         _search_type="filename"
@@ -1017,9 +1056,11 @@ spotlight() {
         _search_type="fulltext"
         ;;
       *)
-        if _blank "$_query"; then
+        if _blank "$_query"
+        then
           _query="$arg"
-        elif _blank "$_path"; then
+        elif _blank "$_path"
+        then
           _path="$arg"
         fi
         ;;
@@ -1029,30 +1070,35 @@ spotlight() {
   _debug printf "search spotlight() \$_query: %s\n" "$_query"
   _debug printf "search spotlight() \$_path: %s\n" "$_path"
 
-  if [[ -z "${_query:-}" ]]; then
+  if [[ -z "${_query:-}" ]]
+  then
     _die printf "Query missing.\n"
   fi
-  if _present "$_path"; then
+  if _present "$_path"
+  then
     _validate_existence_of_path "$_path"
   fi
 
   case "$_search_type" in
     filename)
-      if _present "$_path"; then
+      if _present "$_path"
+      then
         mdfind "kMDItemDisplayName == '$_query'wc" -onlyin "$_path"
       else
         mdfind "kMDItemDisplayName == '$_query'wc"
       fi
       ;;
     fulltext)
-      if _present "$_path"; then
+      if _present "$_path"
+      then
         mdfind "kMDItemTextContent == '$_query'wc" -onlyin "$_path"
       else
         mdfind "kMDItemTextContent == '$_query'wc"
       fi
       ;;
     *)
-      if _present "$_path"; then
+      if _present "$_path"
+      then
         mdfind -interpret "$_query" -onlyin "$_path"
       else
         mdfind -interpret "$_query"
