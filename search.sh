@@ -115,10 +115,10 @@ set -o pipefail
 #
 # NOTE: also printing $DEFAULT_IFS to /dev/null to avoid shellcheck warnings
 # about the variable being unused.
-DEFAULT_IFS="$IFS"; printf "%s" "$DEFAULT_IFS" > /dev/null
+DEFAULT_IFS="${IFS}"; printf "%s" "${DEFAULT_IFS}" > /dev/null
 SAFER_IFS="$(printf '\n\t')"
 # Then set $IFS
-IFS="$SAFER_IFS"
+IFS="${SAFER_IFS}"
 
 ###############################################################################
 # Globals
@@ -148,7 +148,7 @@ _debug() {
   if [[ "${_USE_DEBUG:-"0"}" -eq 1 ]]; then
     # Prefix debug message with "bug (U+1F41B)"
     printf "🐛  "
-    "$@"
+    "${@}"
     printf "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"
   fi
 }
@@ -161,7 +161,7 @@ _debug() {
 # Usage:
 #   debug "Debug info. Variable: $0"
 debug() {
-  _debug echo "$@"
+  _debug echo "${@}"
 }
 
 ###############################################################################
@@ -179,7 +179,7 @@ debug() {
 _die() {
   # Prefix die message with "cross mark (U+274C)", often displayed as a red x.
   printf "❌  "
-  "$@" 1>&2
+  "${@}" 1>&2
   exit 1
 }
 # die()
@@ -191,7 +191,7 @@ _die() {
 # Usage:
 #   die "Error message. Variable: $0"
 die() {
-  _die echo "$@"
+  _die echo "${@}"
 }
 
 ###############################################################################
@@ -199,7 +199,7 @@ die() {
 ###############################################################################
 
 # Get raw options for any commands that expect them.
-_RAW_OPTIONS="$*"
+_RAW_OPTIONS="${*}"
 
 # Steps:
 #
@@ -237,9 +237,9 @@ optstring=hg
 # argument to the option, such as wget -qO-)
 unset options
 # while the number of arguments is greater than 0
-while (($#))
+while ((${#}))
 do
-  case $1 in
+  case ${1} in
     # if option is of type -ab
     -[!-]?*)
       # loop over each character starting with the second
@@ -248,11 +248,11 @@ do
         # extract 1 character from position 'i'
         c=${1:i:1}
         # add current char to options
-        options+=("-$c")
+        options+=("-${c}")
 
         # if option takes a required argument, and it's not the last char
         # make the rest of the string its argument
-        if [[ $optstring = *"$c:"* && ${1:i+1} ]]
+        if [[ ${optstring} = *"${c}:"* && ${1:i+1} ]]
         then
           options+=("${1:i+1}")
           break
@@ -267,12 +267,12 @@ do
     --)
       options+=(--endopts)
       shift
-      options+=("$@")
+      options+=("${@}")
       break
       ;;
     # otherwise, nothing special
     *)
-      options+=("$1")
+      options+=("${1}")
       ;;
   esac
 
@@ -290,18 +290,18 @@ unset options
 # command. This is essentially the same as the program arguments, minus those
 # that have been filtered out in the program option parsing loop. This array
 # is initialized with $0, which is the program's name.
-_COMMAND_ARGV=("$0")
+_COMMAND_ARGV=("${0}")
 # Initialize $_CMD and $_USE_DEBUG, which can continue to be blank depending on
 # what the program needs.
 _CMD=""
 _USE_DEBUG=0
 _FORCE_GUI=0
 
-while [ $# -gt 0 ]
+while [ ${#} -gt 0 ]
 do
-  opt="$1"
+  opt="${1}"
   shift
-  case "$opt" in
+  case "${opt}" in
     -h|--help)
       _CMD="help"
       ;;
@@ -317,11 +317,11 @@ do
     *)
       # The first non-option argument is assumed to be the command name.
       # All subsequent arguments are added to $command_arguments.
-      if [[ -n $_CMD ]]
+      if [[ -n ${_CMD} ]]
       then
-        _COMMAND_ARGV+=("$opt")
+        _COMMAND_ARGV+=("${opt}")
       else
-        _CMD="$opt"
+        _CMD="${opt}"
       fi
       ;;
   esac
@@ -338,10 +338,18 @@ done
 _COMMAND_PARAMETERS=(${_COMMAND_ARGV[*]})
 unset _COMMAND_PARAMETERS[0]
 
-_debug printf "\$_CMD: %s\n" "$_CMD"
-_debug printf "\$_RAW_OPTIONS (one per line):\n%s\n" "$_RAW_OPTIONS"
-_debug printf "\$_COMMAND_ARGV: %s\n" "${_COMMAND_ARGV[*]}"
-_debug printf "\$_COMMAND_PARAMETERS: %s\n" "${_COMMAND_PARAMETERS[*]:-}"
+_debug printf \
+  "\${_CMD}: %s\n" \
+  "${_CMD}"
+_debug printf \
+  "\${_RAW_OPTIONS} (one per line):\n%s\n" \
+  "${_RAW_OPTIONS}"
+_debug printf \
+  "\${_COMMAND_ARGV[*]}: %s\n" \
+  "${_COMMAND_ARGV[*]}"
+_debug printf \
+  "\${_COMMAND_PARAMETERS[*]:-}: %s\n" \
+  "${_COMMAND_PARAMETERS[*]:-}"
 
 ###############################################################################
 # Environment
@@ -350,9 +358,9 @@ _debug printf "\$_COMMAND_PARAMETERS: %s\n" "${_COMMAND_PARAMETERS[*]:-}"
 # $_ME
 #
 # Set to the program's basename.
-_ME=$(basename "$0")
+_ME=$(basename "${0}")
 
-_debug printf "\$_ME: %s\n" "$_ME"
+_debug printf "\${_ME}: %s\n" "${_ME}"
 
 ###############################################################################
 # Load Commands
@@ -383,25 +391,25 @@ _load_commands() {
     # Each element has the format `declare -f function_name`, so set the name
     # to only the 'function_name' part of the string.
     local function_name
-    function_name=$(printf "%s" "$c" | awk '{ print $3 }')
+    function_name=$(printf "%s" "${c}" | awk '{ print $3 }')
 
-    _debug printf "_load_commands() \$function_name: %s\n" "$function_name"
+    _debug printf "_load_commands() \${function_name}: %s\n" "${function_name}"
 
     # Add the function name to the $_DEFINED_COMMANDS array unless it starts
     # with an underscore or is one of the desc(), debug(), or die() functions,
     # since these are treated as having 'private' visibility.
-    if ! ( [[ "$function_name" =~ ^_(.*)  ]] || \
-           [[ "$function_name" == "desc"  ]] || \
-           [[ "$function_name" == "debug" ]] || \
-           [[ "$function_name" == "die"   ]]
+    if ! ( [[ "${function_name}" =~ ^_(.*)  ]] || \
+           [[ "${function_name}" == "desc"  ]] || \
+           [[ "${function_name}" == "debug" ]] || \
+           [[ "${function_name}" == "die"   ]]
     )
     then
-      _DEFINED_COMMANDS+=("$function_name")
+      _DEFINED_COMMANDS+=("${function_name}")
     fi
   done
 
   _debug printf \
-    "commands() \$_DEFINED_COMMANDS:\n%s\n" \
+    "commands() \${_DEFINED_COMMANDS[*]:-}:\n%s\n" \
     "${_DEFINED_COMMANDS[*]:-}"
 }
 
@@ -419,24 +427,24 @@ _load_commands() {
 # NOTE: must be called at end of program after all commands have been defined.
 _main() {
   _debug printf "main(): entering...\n"
-  _debug printf "main() \$_CMD (upon entering): %s\n" "$_CMD"
+  _debug printf "main() \${_CMD} (upon entering): %s\n" "${_CMD}"
 
   # If $_CMD is blank, then set to help
-  if [[ -z $_CMD ]]
+  if [[ -z "${_CMD}" ]]
   then
-    _CMD="$DEFAULT_COMMAND"
+    _CMD="${DEFAULT_COMMAND}"
   fi
 
   # Load all of the commands.
   _load_commands
 
   # If the command is defined, run it, otherwise return an error.
-  if _contains "$_CMD" "${_DEFINED_COMMANDS[*]:-}"
+  if _contains "${_CMD}" "${_DEFINED_COMMANDS[*]:-}"
   then
     # Pass all comment arguments to the program except for the first ($0).
-    $_CMD "${_COMMAND_PARAMETERS[@]:-}"
+    ${_CMD} "${_COMMAND_PARAMETERS[@]:-}"
   else
-    _die printf "Unknown command: %s\n" "$_CMD"
+    _die printf "Unknown command: %s\n" "${_CMD}"
   fi
 }
 
@@ -452,7 +460,7 @@ _main() {
 # Takes a potential function name as an argument and returns whether a function
 # exists with that name.
 _function_exists() {
-  [ "$(type -t "$1")" == 'function' ]
+  [ "$(type -t "${1}")" == 'function' ]
 }
 
 # _command_exists()
@@ -466,7 +474,7 @@ _function_exists() {
 # For information on why `hash` is used here, see:
 # http://stackoverflow.com/a/677212
 _command_exists() {
-  hash "$1" 2>/dev/null
+  hash "${1}" 2>/dev/null
 }
 
 # _contains()
@@ -479,10 +487,10 @@ _contains() {
   local test_list=(${*:2})
   for _test_element in "${test_list[@]:-}"
   do
-    _debug printf "_contains() \$_test_element: %s\n" "$_test_element"
-    if [[ "$_test_element" == "$1" ]]
+    _debug printf "_contains() \${_test_element}: %s\n" "${_test_element}"
+    if [[ "${_test_element}" == "${1}" ]]
     then
-      _debug printf "_contains() match: %s\n" "$1"
+      _debug printf "_contains() match: %s\n" "${1}"
       return 0
     fi
   done
@@ -502,7 +510,7 @@ _join() {
   local target_array
   local dirty
   local clean
-  separator="$1"
+  separator="${1}"
   target_array=(${@:2})
   dirty="$(printf "${separator}%s"  "${target_array[@]}")"
   clean="${dirty:${#separator}}"
@@ -520,7 +528,7 @@ _join() {
 # This is a shortcut for simple cases where a command wants to check for the
 # presence of options quickly without parsing the options again.
 _command_argv_includes() {
-  _contains "$1" "${_COMMAND_ARGV[*]}"
+  _contains "${1}" "${_COMMAND_ARGV[*]}"
 }
 
 # _blank()
@@ -574,16 +582,16 @@ _present() {
 # escaping backslashes, which is more common.
 desc() {
   set +e
-  [[ -z $1 ]] && _die printf "desc: No command name specified.\n"
+  [[ -z ${1} ]] && _die printf "desc: No command name specified.\n"
   if [[ -n ${2:-} ]]
   then
-    read -d '' "_desc_$1" <<EOM
-$2
+    read -d '' "_desc_${1}" <<EOM
+${2}
 EOM
-    _debug printf "desc() set with argument: _desc_%s\n" "$1"
+    _debug printf "desc() set with argument: _desc_%s\n" "${1}"
   else
-    read -d '' "_desc_$1"
-    _debug printf "desc() set with pipe: _desc_%s\n" "$1"
+    read -d '' "_desc_${1}"
+    _debug printf "desc() set with pipe: _desc_%s\n" "${1}"
   fi
   set -e
 }
@@ -596,12 +604,12 @@ EOM
 # Prints the description for a given command, provided the description has been
 # set using the desc() function.
 _print_desc() {
-  local var="_desc_$1"
+  local var="_desc_${1}"
   if [[ -n ${!var:-} ]]
   then
     printf "%s\n" "${!var}"
   else
-    printf "No additional information for \`%s\`\n" "$1"
+    printf "No additional information for \`%s\`\n" "${1}"
   fi
 }
 
@@ -613,25 +621,25 @@ _print_desc() {
 
 desc "version" <<EOM
 Usage:
-  $_ME ( version | --version )
+  ${_ME} ( version | --version )
 
 Description:
   Display the current program version.
 
-  To save you the trouble, the current version is $_VERSION
+  To save you the trouble, the current version is ${_VERSION}
 EOM
 version() {
-  printf "%s\n" "$_VERSION"
+  printf "%s\n" "${_VERSION}"
 }
 
 # Help ########################################################################
 
 desc "help" <<EOM
 Usage:
-  $_ME help [<command>]
+  ${_ME} help [<command>]
 
 Description:
-  Display help information for $_ME or a specified command.
+  Display help information for ${_ME} or a specified command.
 EOM
 help() {
   if [[ ${#_COMMAND_ARGV[@]} = 1 ]]
@@ -643,27 +651,27 @@ help() {
  (__  )  __/ /_/ / /  / /__/ / / / (__  ) / / /
 /____/\\___/\\__,_/_/   \\___/_/ /_(_)____/_/ /_/
 
-A command line search multi-tool. \`$_ME\` provides a common interface
+A command line search multi-tool. \`${_ME}\` provides a common interface
 for both local file and full text searches, as well as web searches.
 
-Version: $_VERSION
+Version: ${_VERSION}
 
 Usage:
-  $_ME <command> [--command-options] [<arguments>]
-  $_ME -h | --help
-  $_ME --version
+  ${_ME} <command> [--command-options] [<arguments>]
+  ${_ME} -h | --help
+  ${_ME} --version
 
 Options:
   -h --help  Display this help information.
   --version  Display version information.
 
 Help:
-  $_ME help [<command>]
+  ${_ME} help [<command>]
 
 $(commands)
 EOM
   else
-    _print_desc "$1"
+    _print_desc "${1}"
   fi
 }
 
@@ -671,7 +679,7 @@ EOM
 
 desc "commands" <<EOM
 Usage:
-  $_ME commands [--raw]
+  ${_ME} commands [--raw]
 
 Options:
   --raw  Display the command list without formatting.
@@ -750,23 +758,23 @@ _YANDEX_URL="https://yandex.ru/yandsearch?text="
 _get_open_cmd() {
   local open_cmd=
   if ( \
-    [[ "$_FORCE_GUI" -eq 0 ]]         && \
-    [[ -n "$_DEFAULT_TERM_BROWSER" ]] && \
-    _command_exists "$_DEFAULT_TERM_BROWSER"
+    [[ "${_FORCE_GUI}" -eq 0 ]]         && \
+    [[ -n "${_DEFAULT_TERM_BROWSER}" ]] && \
+    _command_exists "${_DEFAULT_TERM_BROWSER}"
   )
   then
-    open_cmd="$_DEFAULT_TERM_BROWSER"
+    open_cmd="${_DEFAULT_TERM_BROWSER}"
   else
-    case "$OSTYPE" in
+    case "${OSTYPE}" in
       darwin*)  open_cmd="open" ;;
       cygwin*)  open_cmd="cygstart" ;;
       linux*)   open_cmd="xdg-open" ;;
-      *)        echo "Platform $OSTYPE not supported"
+      *)        echo "Platform ${OSTYPE} not supported"
                 return 1
                 ;;
     esac
   fi
-  printf "%s" "$open_cmd"
+  printf "%s" "${open_cmd}"
 }
 
 # _join_query()
@@ -775,8 +783,8 @@ _get_open_cmd() {
 #   _join_query <query>
 _join_query() {
   local _joined_query
-  _joined_query="$(_join "+" "$@")"
-  printf "%s\n" "$_joined_query"
+  _joined_query="$(_join "+" "${@}")"
+  printf "%s\n" "${_joined_query}"
 }
 
 # _web_search()
@@ -790,21 +798,21 @@ _web_search() {
   local search_url
 
   open_cmd="$(_get_open_cmd)"
-  base_url="$1"
+  base_url="${1}"
 
   if [[ -z "${2:-}" ]]
   then
-    search_url="$(printf "%s\n" "$base_url" | sed "s_[^/]*\$__" )"
+    search_url="$(printf "%s\n" "${base_url}" | sed "s_[^/]*\$__" )"
   else
     joined_query="$(_join_query "${@:2}")"
     search_url="${base_url}${joined_query}"
   fi
 
-  if [[ ! "$open_cmd" == "$_DEFAULT_TERM_BROWSER" ]];
+  if [[ ! "${open_cmd}" == "${_DEFAULT_TERM_BROWSER}" ]];
   then
-    "$open_cmd" "${search_url}" &>/dev/null
+    "${open_cmd}" "${search_url}" &>/dev/null
   else
-    "$open_cmd" "${search_url}"
+    "${open_cmd}" "${search_url}"
   fi
 }
 
@@ -827,7 +835,7 @@ _validate_existence_of_path() {
 
 desc "ack" <<EOM
 Usage:
-  $_ME ack <query> [<path>]
+  ${_ME} ack <query> [<path>]
 
 Description:
   Search file contents using \`ack\`. By default, the search is scoped to the
@@ -843,11 +851,11 @@ _get_ack_cmd() {
   then
     _ack_cmd="ack-grep"
   fi
-  printf "%s\n" "$_ack_cmd"
+  printf "%s\n" "${_ack_cmd}"
 }
 _ACK_CMD="$(_get_ack_cmd)"
 ack() {
-  if _blank "$_ACK_CMD"
+  if _blank "${_ACK_CMD}"
   then
     printf "\
 \`ack\` is not installed.
@@ -864,18 +872,18 @@ http://beyondgrep.com/
   local _path="."
   if _present "${2:-}"
   then
-    _path="$2"
-    _validate_existence_of_path "$_path"
+    _path="${2}"
+    _validate_existence_of_path "${_path}"
   fi
 
-  "$_ACK_CMD" "$1" "$_path"
+  "${_ACK_CMD}" "${1}" "${_path}"
 }
 
 # -------------------------------------------------------------------------- ag
 
 desc "ag" <<EOM
 Usage:
-  $_ME ag <query> [<path>]
+  ${_ME} ag <query> [<path>]
 
 Description:
   Search file contents using The Silver Searcher, aka \`ag\`. By default, the
@@ -889,11 +897,11 @@ _get_ag_cmd() {
   then
     _ag_cmd="$(which ag)"
   fi
-  printf "%s\n" "$_ag_cmd"
+  printf "%s\n" "${_ag_cmd}"
 }
 _AG_CMD="$(which ag)"
 ag() {
-  if _blank "$_AG_CMD"
+  if _blank "${_AG_CMD}"
   then
     printf "\
 \`ag\` (The Silver Searcher) is not installed.
@@ -911,18 +919,18 @@ http://geoff.greer.fm/ag/
   local _path="."
   if _present "${2:-}"
   then
-    _path="$2"
-    _validate_existence_of_path "$_path"
+    _path="${2}"
+    _validate_existence_of_path "${_path}"
   fi
 
-  "$_AG_CMD" "$1" "$_path"
+  "${_AG_CMD}" "${1}" "${_path}"
 }
 
 # ------------------------------------------------------------------------ find
 
 desc "find" <<EOM
 Usage:
-  $_ME find <filename> [<path>]
+  ${_ME} find <filename> [<path>]
 
 Description:
   Search for a file with a given filename in a directory subtree using the
@@ -940,18 +948,18 @@ find() {
   local _path="."
   if _present "${2:-}"
   then
-    _path="$2"
-    _validate_existence_of_path "$_path"
+    _path="${2}"
+    _validate_existence_of_path "${_path}"
   fi
 
-  "$_FIND_CMD" "$_path" -name "$1"
+  "${_FIND_CMD}" "${_path}" -name "${1}"
 }
 
 # ------------------------------------------------------------------------ grep
 
 desc "grep" <<EOM
 Usage:
-  $_ME grep <pattern> [<path>]
+  ${_ME} grep <pattern> [<path>]
 
 Description:
   Search file conents in a directory subtree for a given pattern using the
@@ -975,24 +983,24 @@ grep() {
   local _path="."
   if _present "${2:-}"
   then
-    _path="$2"
-    _validate_existence_of_path "$_path"
+    _path="${2}"
+    _validate_existence_of_path "${_path}"
   fi
 
-  "$_GREP_CMD" \
+  "${_GREP_CMD}" \
     --recursive \
     --color=auto \
     --line-number \
     --exclude-dir={.bzr,.cvs,.git,.hg,.svn} \
-    -e "$1" \
-    "$_path"
+    -e "${1}" \
+    "${_path}"
 }
 
 # ---------------------------------------------------------------------- locate
 
 desc "locate" <<EOM
 Usage:
-  $_ME locate <query> [<path>]
+  ${_ME} locate <query> [<path>]
 
 Description:
   Search for a file with a given filename using the \`locate\` command. By
@@ -1008,17 +1016,17 @@ locate() {
   local _path="."
   if _present "${2:-}"
   then
-    _path="$2"
-    _validate_existence_of_path "$_path"
+    _path="${2}"
+    _validate_existence_of_path "${_path}"
   fi
 
-  if _present "$_path"
+  if _present "${_path}"
   then
     # Prefix the pattern with the provided path, and use wildcards to match
     # matching files at any level in the subtree.
-    "$_LOCATE_CMD" "$_path/*$1*"
+    "${_LOCATE_CMD}" "${_path}/*${1}*"
   else
-    "$_LOCATE_CMD" "$1"
+    "${_LOCATE_CMD}" "${1}"
   fi
 }
 
@@ -1029,9 +1037,9 @@ if _command_exists "mdfind"
 then
 desc "spotlight" <<EOM
 Usage:
-  $_ME spotlight <full text query | filename> [<path>]
-  $_ME spotlight ( -f | --filename ) <filename> [<path>]
-  $_ME spotlight ( --fulltext | -c | --content ) <query> [<path>]
+  ${_ME} spotlight <full text query | filename> [<path>]
+  ${_ME} spotlight ( -f | --filename ) <filename> [<path>]
+  ${_ME} spotlight ( --fulltext | -c | --content ) <query> [<path>]
 
 Options:
   -f --filename             A filename to search for.
@@ -1054,7 +1062,7 @@ spotlight() {
 
   for arg in "${_COMMAND_ARGV[@]:1}"
   do
-    case $arg in
+    case ${arg} in
       -f|--filename)
         _search_type="filename"
         ;;
@@ -1062,52 +1070,52 @@ spotlight() {
         _search_type="fulltext"
         ;;
       *)
-        if _blank "$_query"
+        if _blank "${_query}"
         then
-          _query="$arg"
-        elif _blank "$_path"
+          _query="${arg}"
+        elif _blank "${_path}"
         then
-          _path="$arg"
+          _path="${arg}"
         fi
         ;;
     esac
   done
 
-  _debug printf "search spotlight() \$_query: %s\n" "$_query"
-  _debug printf "search spotlight() \$_path: %s\n" "$_path"
+  _debug printf "search spotlight() \${_query}: %s\n" "${_query}"
+  _debug printf "search spotlight() \${_path}: %s\n" "${_path}"
 
   if [[ -z "${_query:-}" ]]
   then
     _die printf "Query missing.\n"
   fi
-  if _present "$_path"
+  if _present "${_path}"
   then
-    _validate_existence_of_path "$_path"
+    _validate_existence_of_path "${_path}"
   fi
 
-  case "$_search_type" in
+  case "${_search_type}" in
     filename)
-      if _present "$_path"
+      if _present "${_path}"
       then
-        mdfind "kMDItemDisplayName == '$_query'wc" -onlyin "$_path"
+        mdfind "kMDItemDisplayName == '${_query}'wc" -onlyin "${_path}"
       else
-        mdfind "kMDItemDisplayName == '$_query'wc"
+        mdfind "kMDItemDisplayName == '${_query}'wc"
       fi
       ;;
     fulltext)
-      if _present "$_path"
+      if _present "${_path}"
       then
-        mdfind "kMDItemTextContent == '$_query'wc" -onlyin "$_path"
+        mdfind "kMDItemTextContent == '${_query}'wc" -onlyin "${_path}"
       else
-        mdfind "kMDItemTextContent == '$_query'wc"
+        mdfind "kMDItemTextContent == '${_query}'wc"
       fi
       ;;
     *)
-      if _present "$_path"
+      if _present "${_path}"
       then
-        mdfind -interpret "$_query" -onlyin "$_path"
+        mdfind -interpret "${_query}" -onlyin "${_path}"
       else
-        mdfind -interpret "$_query"
+        mdfind -interpret "${_query}"
       fi
       ;;
   esac
@@ -1122,7 +1130,7 @@ fi
 
 desc "baidu" <<EOM
 Usage:
-  $_ME baidu [-g|--gui] [<query>]
+  ${_ME} baidu [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1131,14 +1139,14 @@ Description:
   Search with Baidu.
 EOM
 baidu() {
-  _web_search "$_BAIDU_URL" "$@"
+  _web_search "${_BAIDU_URL}" "${@}"
 }
 
 # ------------------------------------------------------------------------ bing
 
 desc "bing" <<EOM
 Usage:
-  $_ME bing [-g|--gui] [<query>]
+  ${_ME} bing [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1147,14 +1155,14 @@ Description:
   Search with Bing.
 EOM
 bing() {
-  _web_search "$_BING_URL" "$@"
+  _web_search "${_BING_URL}" "${@}"
 }
 
 # ------------------------------------------------------------------------- ddg
 
 desc "ddg" <<EOM
 Usage:
-  $_ME ddg [-g|--gui] [<query>]
+  ${_ME} ddg [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1163,14 +1171,14 @@ Description:
   Search with DuckDuckGo.
 EOM
 ddg() {
-  _web_search "$_DUCKDUCKGO_URL" "$@"
+  _web_search "${_DUCKDUCKGO_URL}" "${@}"
 }
 
 # ---------------------------------------------------------------------- google
 
 desc "google" <<EOM
 Usage:
-  $_ME google [-g|--gui] [<query>]
+  ${_ME} google [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1179,14 +1187,14 @@ Description:
   Search with Google.
 EOM
 google() {
-  _web_search "$_GOOGLE_URL" "$@"
+  _web_search "${_GOOGLE_URL}" "${@}"
 }
 
 # ----------------------------------------------------------------------- yahoo
 
 desc "yahoo" <<EOM
 Usage:
-  $_ME yahoo [-g|--gui] [<query>]
+  ${_ME} yahoo [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1195,7 +1203,7 @@ Description:
   Search with Yahoo!
 EOM
 yahoo() {
-  _web_search "$_YAHOO_URL" "$@"
+  _web_search "${_YAHOO_URL}" "${@}"
 }
 
 
@@ -1203,7 +1211,7 @@ yahoo() {
 
 desc "yandex" <<EOM
 Usage:
-  $_ME yandex [-g|--gui] [<query>]
+  ${_ME} yandex [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1212,7 +1220,7 @@ Description:
   Search with Yandex.
 EOM
 yandex() {
-  _web_search "$_YANDEX_URL" "$@"
+  _web_search "${_YANDEX_URL}" "${@}"
 }
 
 ###############################################################################
@@ -1223,7 +1231,7 @@ yandex() {
 
 desc "ducky" <<EOM
 Usage:
-  $_ME ducky [-g|--gui] [<query>]
+  ${_ME} ducky [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1232,14 +1240,14 @@ Description:
   I feel ducky. Go right to the first DuckDuckGo result for this query.
 EOM
 ducky() {
-  _web_search "$_DUCKDUCKGO_URL" "\\! ${*}"
+  _web_search "${_DUCKDUCKGO_URL}" "\\! ${*}"
 }
 
 # ------------------------------------------------------------------ graphemica
 
 desc "graphemica" <<EOM
 Usage:
-  $_ME graphemica [-g|--gui] [<query>]
+  ${_ME} graphemica [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1250,14 +1258,14 @@ Description:
   http://graphemica.com/
 EOM
 graphemica() {
-  _web_search "$_DUCKDUCKGO_URL" "\\!graphemica ${*}"
+  _web_search "${_DUCKDUCKGO_URL}" "\\!graphemica ${*}"
 }
 
 # ----------------------------------------------------------------------- image
 
 desc "image" <<EOM
 Usage:
-  $_ME image [-g|--gui] [<query>]
+  ${_ME} image [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1268,14 +1276,14 @@ Description:
   https://images.google.com/
 EOM
 image() {
-  _web_search "$_DUCKDUCKGO_URL" "\\!i ${*}"
+  _web_search "${_DUCKDUCKGO_URL}" "\\!i ${*}"
 }
 
 # ------------------------------------------------------------------------- map
 
 desc "map" <<EOM
 Usage:
-  $_ME map [-g|--gui] [<query>]
+  ${_ME} map [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1286,14 +1294,14 @@ Description:
   https://maps.google.com/
 EOM
 map() {
-  _web_search "$_DUCKDUCKGO_URL" "\\!m ${*}"
+  _web_search "${_DUCKDUCKGO_URL}" "\\!m ${*}"
 }
 
 # ------------------------------------------------------------------------ news
 
 desc "news" <<EOM
 Usage:
-  $_ME news [-g|--gui] [<query>]
+  ${_ME} news [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1304,14 +1312,14 @@ Description:
   https://news.google.com/
 EOM
 news() {
-  _web_search "$_DUCKDUCKGO_URL" "\\!n ${*}"
+  _web_search "${_DUCKDUCKGO_URL}" "\\!n ${*}"
 }
 
 # --------------------------------------------------------------------- youtube
 
 desc "youtube" <<EOM
 Usage:
-  $_ME youtube [-g|--gui] [<query>]
+  ${_ME} youtube [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1322,14 +1330,14 @@ Description:
   https://www.youtube.com/
 EOM
 youtube() {
-  _web_search "$_DUCKDUCKGO_URL" "\\!yt ${*}"
+  _web_search "${_DUCKDUCKGO_URL}" "\\!yt ${*}"
 }
 
 # ------------------------------------------------------------------------ wiki
 
 desc "wiki" <<EOM
 Usage:
-  $_ME wiki [-g|--gui] [<query>]
+  ${_ME} wiki [-g|--gui] [<query>]
 
 Options:
   -g --gui  Open in the default GUI browser rather than the terminal.
@@ -1340,7 +1348,7 @@ Description:
   https://en.wikipedia.org/wiki/Main_Page
 EOM
 wiki() {
-  _web_search "$_DUCKDUCKGO_URL" "\\!w ${*}"
+  _web_search "${_DUCKDUCKGO_URL}" "\\!w ${*}"
 }
 
 ###############################################################################
