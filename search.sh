@@ -1030,6 +1030,36 @@ locate() {
   fi
 }
 
+# --------------------------------------------------------------------- ripgrep
+
+desc "rg" <<EOM
+Usage:
+  ${_ME} rg <pattern> [<path>]
+
+Description:
+  Search file conents in a directory subtree for a given pattern using the
+  \`ripgrep\` utility. By default, this is scoped to the current directory's
+  subtree. When the <path> argument is provided, the search is scoped to the
+  given directory's subtree or the given file.
+EOM
+_RG_CMD="$(which rg)"
+rg() {
+  if [[ -z "${1:-}" ]]
+  then
+    _die printf "Query missing.\n"
+  fi
+  local _path="."
+  if _present "${2:-}"
+  then
+    _path="${2}"
+    _validate_existence_of_path "${_path}"
+  fi
+
+  "${_RG_CMD}" \
+    "${1}" \
+    "${_path}"
+}
+
 # ------------------------------------------------------------------- Spotlight
 
 # Only load this if `mdfind` is present on the system.
