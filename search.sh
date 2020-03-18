@@ -13,7 +13,7 @@
 # http://git.io/oh-my-zsh-web-search-plugin
 #
 # Built with bash-boilerplate:
-# https://github.com/alphabetum/bash-boilerplate
+# https://github.com/xwmx/bash-boilerplate
 #
 # Copyright (c) 2015 William Melody • hi@williammelody.com
 #########################################################################

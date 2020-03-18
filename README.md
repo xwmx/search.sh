@@ -17,20 +17,20 @@ interface for both local file and full text searches, as well as web searches.
 
 To install with [Homebrew](http://brew.sh/):
 
-    brew install alphabetum/taps/search-sh
+    brew install xwmx/taps/search-sh
 
 ### bpkg
 
 To install with [bpkg](http://www.bpkg.io/):
 
-    bpkg install alphabetum/search.sh
+    bpkg install xwmx/search.sh
 
 ### Manual
 
 To install manually, simply add the `hosts` script to your `$PATH`. If
 you already have a `~/bin` directory, you can use the following command:
 
-    curl -L https://raw.github.com/alphabetum/search.sh/master/search.sh \
+    curl -L https://raw.github.com/xwmx/search.sh/master/search.sh \
       -o ~/bin/search && chmod +x ~/bin/search
 
 ## Usage
