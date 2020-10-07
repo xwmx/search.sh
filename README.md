@@ -17,7 +17,8 @@ interface for both local file and full text searches, as well as web searches.
 
 To install with [Homebrew](http://brew.sh/):
 
-    brew install xwmx/taps/search-sh
+    brew tap xwmx/taps
+    brew install search-sh
 
 ### bpkg
 
